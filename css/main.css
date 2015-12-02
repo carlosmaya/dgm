@@ -10,11 +10,11 @@ img                                         { max-width: 100%; }
 ul, ol                                      { padding-left: 0; }
 a:hover                                     { text-decoration: none; }
 a:focus, a:active                           { border: none; outline: 0; }
-.container-fluid.fixed                      { max-width: 1100px; }
+.container-fluid                            { max-width: 1100px; }
 .btn                                        { padding: 10px; border: none; border-radius: 0; }
 .btn-default                                { background-color: #9b9b9b; color: #fff; font-size: 12px; font-weight: 600; text-transform: uppercase; }
 .equal-height                               { display : -webkit-box; display : -webkit-flex; display : -ms-flexbox; display :flex; }
-.video                                      { position: relative; padding-bottom: 56.25%; padding-top: 30px; height: 0; overflow: hidden; }
+.video                                      { position: relative; margin: 0; margin-bottom: 30px; padding: 0; padding-top: 56.25%; height: 0; overflow: hidden; }
 .video iframe                               { position: absolute; left: 0; top: 0; width: 100%; height: 100%; border: none; }
 p.small                                     { font-size: 11px; }
 .links-container                            { overflow: hidden; }
@@ -32,6 +32,8 @@ p.small                                     { font-size: 11px; }
 #home-video                                 { display: none; margin-top: 20px; }
 .tool-iframe                                { width: 100%; height: 650px; overflow: hidden; border: none; }
 .scrolloff                                  { pointer-events: none; }
+.bg-container                               { position: relative; }
+.bg-container .bg                           { background-color: #474747; position: absolute; left: 0; top: 0; bottom: 0; right: 75.9%; }
 
 /*********************************
     SHARE STYLES
@@ -276,7 +278,8 @@ section#about-video .video                  { margin: 0 -15px; }
 *********************************/
 #slider                                     { margin-bottom: 60px; }
 #slider .carousel-control                   { background-image: none; }
-#slider .item img                           { height: 440px; }
+#slider .item > a                           { display: inline-block; width: 100%; margin: 0 auto; text-align: center; }
+#slider .item img                           { width: 100%; height: 440px; margin: 0 auto; }
 .carousel-caption                           { padding: 20px 30px; background-color: #fff; bottom: 50%; left: 25%; right: 25%; color: #303030; text-align: left; text-shadow: none; -webkit-transform: translateY(50%); -moz-transform: translateY(50%); -ms-transform: translateY(50%); -o-transform: translateY(50%); transform: translateY(50%); }
 .carousel-caption h3                        { margin-top: 10px; margin-bottom: 30px; }
 .carousel-caption p                         { font-size: 16px; line-height: 28px; font-weight: 300; }
@@ -387,7 +390,7 @@ section#about-video .video                  { margin: 0 -15px; }
 .post-item h5 > a                           { color: #fff; }
 .post-item h6                               { margin-top: 20px; font-size: 12px; font-weight: 700; color: #fff; text-transform: uppercase; }
 .post-item p                                { margin-bottom: 0; font-size: 12px; font-weight: 300; color: #fff; }
-p.cover-image                               { text-align: center; }
+p.cover-image                               { margin-top: 30px; text-align: center; }
 .post-datasets                              { margin-top: 20px; }
 .datasets-list                              { margin-top: 20px; padding-left: 0; list-style: none; }
 .datasets-list > li                         { padding: 10px; margin-bottom: 10px; background-color: #eee; font-size: 12px; font-weight: 300; }
@@ -402,15 +405,17 @@ p.cover-image                               { text-align: center; }
 #app-header                                 { min-height: 300px; background-color: #eee; position: relative; }
 #app-header h1                              { font-size: 20px; font-weight: 600; color: #474747; }
 #app-header .app-buttons                    { position: absolute; left: 15px; bottom: 10px; }
-#app-slider                                 { margin-right: -15px; }
-#app-slider .carousel-inner                 { max-height: 300px; }
-#app-slider .carousel-inner .item > img     { margin: 0 auto; max-width: 100%; max-height: 300px; }
+.app-item .carousel                         { height: 300px; margin-right: -15px; }
+.app-item .carousel .carousel-inner,
+.app-item .carousel .item                   { height: 300px; text-align: center; }
+.app-item .carousel .item > img             { margin: 0 auto; max-width: 100%; max-height: 300px; position: relative; top: 50%; -webkit-transform: translateY(-50%); -ms-transform: translateY(-50%); transform: translateY(-50%); }
 .tool-content                               { background-color: #f7f7f7; padding: 30px 15px; }
 .app-subtitle                               { margin-top: 60px; margin-bottom: 30px; }
 .app-item .inner                            { margin: 10px; background-color: #eee; position: relative; }
 .app-item .info                             { background-color: rgba(0,0,0,0.6); padding: 10px 20px; position: absolute; bottom: 0; left: 0; right: 0; }
 .app-item .info h5                          { color: #fff; margin-top: 0; }
 .app-item .info p                           { color: #ccc; }
+.app-item table.data                        { display: none; }
 
 /***********************
     GUIA STYLES
@@ -442,7 +447,8 @@ p.cover-image                               { text-align: center; }
 /***********************
     Main Content
 ***********************/
-#main-content                               { margin-top: 10px; margin-bottom: 40px; }
+#guide-content                              { margin: 40px 0; }
+#guide-content > h3                         { margin-top: 0; }
 .navigation-item,
 .resource-item                              { margin-bottom: 30px; }
 .resource-item .item                        { width: 100%; height: 100%; margin-bottom: 10px; background-color: #0c9; position: relative; }
@@ -504,19 +510,19 @@ p.cover-image                               { text-align: center; }
     Aside Section
 ***********************/
 .guide-navigation                           { margin-top: 30px; }
-.guide-navigation ul                        { list-style: none; }
-.guide-navigation li                        { margin-bottom: 20px; padding-left: 30px; height: 20px; background: url("../assets/img/guide/navigation_icons.png") no-repeat; }
-.guide-navigation li a                      { color: #595959; font-size: 14px; font-weight: 300; line-height: 20px; font-weight: bold; }
-.guide-navigation li.active a,
-.guide-navigation li:hover a                { color: #0c9; }
-.guide-navigation .item-intro               { background: none; }
-.guide-navigation .item-plan                { background-position: 0 0; }
-.guide-navigation .item-publish             { background-position: 0 -20px; }
-.guide-navigation .item-perfect             { background-position: 0 -40px; }
-.guide-navigation .item-promote             { background-position: 0 -60px; }
-.guide-navigation .item-templates           { background-position: 0 -80px; }
-.guide-navigation .item-resources           { background-position: 0 -80px; }
-.guide-navigation .item-intro a,
-.guide-navigation .item-templates a,
-.guide-navigation .item-resources a         { font-weight: normal; }
-.guide-navigation li:last-child             { margin-bottom: 0; }
+.guide #dgm-sidebar .guide-navigation ul    { list-style: none; }
+.guide #dgm-sidebar .guide-navigation li    { margin-bottom: 20px; padding-top: 0; padding-bottom: 0; padding-left: 30px; height: 20px; background: url("../assets/img/guide/navigation_icons.png") no-repeat; }
+.guide #dgm-sidebar .guide-navigation li a  { color: #595959; font-size: 14px; font-weight: 300; line-height: 20px; font-weight: bold; }
+.guide #dgm-sidebar .guide-navigation li.active a,
+.guide #dgm-sidebar .guide-navigation li:hover a            { color: #0c9; }
+.guide #dgm-sidebar .guide-navigation .item-intro           { background: none; }
+.guide #dgm-sidebar .guide-navigation .item-plan            { background-position: 0 0; }
+.guide #dgm-sidebar .guide-navigation .item-publish         { background-position: 0 -20px; }
+.guide #dgm-sidebar .guide-navigation .item-perfect         { background-position: 0 -40px; }
+.guide #dgm-sidebar .guide-navigation .item-promote         { background-position: 0 -60px; }
+.guide #dgm-sidebar .guide-navigation .item-templates       { background-position: 0 -80px; }
+.guide #dgm-sidebar .guide-navigation .item-resources       { background-position: 0 -80px; }
+.guide #dgm-sidebar .guide-navigation .item-intro a,
+.guide #dgm-sidebar .guide-navigation .item-templates a,
+.guide #dgm-sidebar .guide-navigation .item-resources a     { font-weight: normal; }
+.guide #dgm-sidebar .guide-navigation li:last-child         { margin-bottom: 0; }

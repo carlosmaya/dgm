@@ -28,6 +28,10 @@ var Site    = {
         {
             name    : 'agenda2030',
             url     : 'http://pnud.carto.mx/'
+        },
+        {
+            name    : 'salud',
+            url     : 'http://busca.datos.gob.mx/#/conjuntos/recursos-en-salud'
         }
     ],
 
@@ -41,7 +45,9 @@ var Site    = {
         Site._setScrolling();
         Site._setHovers();
         Site._setResources();
+        Site._setSidebar();
         Site._setSubscribe();
+        Site._setToolData();
         Site._setVideo();
     },
 
@@ -68,13 +74,32 @@ var Site    = {
     },
 
     _loadTweets     : function () {
-        $.get( 'tweets.json',
-            function ( data ) {
-                for ( var i = 0; i < data.length; i++ ) {
-                    var element = $( '<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 tweet"><div class="inner"><p>' + data[i].content + '</p><p class="small">' + data[i].date + '</p><div class="author"><div class="pull-left avatar"><img src="' + data[i].avatar + '"></div><div class="pull-left"><p>' + data[i].author + '</p><a href="https://twitter.com/' +data[i].author_handler + '" target="_blank">@' + data[i].author_handler + '</a></div></div></div></div>' );
-                    $( '#tweets-container' ).append( element );
-                }
-            });
+        if ( $( '#tweets' ).length > 0 ) {
+            $.get( 'tweets.json',
+                function ( data ) {
+                    var displayed   = 3,
+                        total       = data.length,
+                        used        = [],
+                        randomize   = function ( above, below, used ) {
+                            var generated   = Math.floor( Math.random() * below ) + above;
+
+                            if ( used.indexOf( generated ) > -1 ) {
+                                return randomize( above, below, used );
+                            } else {
+                                return generated;
+                            }
+                        };
+
+                    for ( var i = 0; i < displayed; i++ ) {
+                        var index   = randomize( 0, total, used ),
+                            tweet   = data[index];
+                        used.push( index );
+
+                        var element = $( '<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 tweet"><div class="inner"><p>' + tweet.content + '</p><p class="small">' + tweet.date + '</p><div class="author"><div class="pull-left avatar"><img src="' + tweet.avatar + '"></div><div class="pull-left"><p>' + tweet.author + '</p><a href="https://twitter.com/' +tweet.author_handler + '" target="_blank">@' + tweet.author_handler + '</a></div></div></div></div>' );
+                        $( '#tweets-container' ).append( element );
+                    }
+                });
+        }
     },
 
     _pageViews      : function () {
@@ -209,7 +234,9 @@ var Site    = {
         var item    = $( '.navigation-item .item-img' ),
             img     = $( '.navigation-item img' ),
             link;
-        item.height( img.height() );
+
+        item.height( item.width() * 1.22727273 );
+
         $( '.navigation-item .link-center' ).css({
             bottom  : ( img.height() ) / 2
         });
@@ -272,6 +299,17 @@ var Site    = {
         });
     },
 
+    _setSidebar     : function () {
+        if ( $( '.bg-container' ).length > 0 ) {
+            var sidebar     = $( '#dgm-sidebar' ),
+                bg          = $( '.bg-container > .bg' );
+
+            bg.css({
+                right   : $( window ).width() - ( sidebar.width() + sidebar.position().left + 30 )
+            });
+        }
+    },
+
     _setSubscribe   : function () {
         $( '#subscribe-form' ).submit( function ( e ) {
             e.preventDefault();
@@ -306,6 +344,27 @@ var Site    = {
                 });
             }
         });
+    },
+
+    _setToolData    : function () {
+        if ( $( '#tool-datasets' ).length > 0 ) {
+            $.each( $( '#tool-datasets li' ), function ( i, el ) {
+                var $el     = $( el ),
+                    list    = $( '#tool-datasets' ),
+                    table   = $( 'table.data' ),
+                    link    = 'http://busca.datos.gob.mx/';
+
+                $.get( 'http://catalogo.datos.gob.mx/api/3/action/package_show', {
+                    id  : $el.html()
+                }, function ( data ) {
+                    var result  = data.result;
+
+                    table.append( $('<tr><td><a href="' + link + '#/conjuntos/' + result.name + '" target="_blank">' + result.title + '</a></td><td><a href="' + link + '#/instituciones/' + result.organization.name + '" target="_blank">' + result.organization.title + '</a></td><td>' + result.metadata_modified.substring( 0, 10 ) + '</td><td><span class="label" data-format="' + result.resources[0].format.replace( / /g, '' ) + '">' + result.resources[0].format + '</span></td><td class="ic-dataset"><a href="' + link + '#/conjuntos/' + result.name + '" target="_blank"><img src="/assets/img/ic-dataset.png"></a></td></tr>'));
+                    table.css( 'display', 'block' );
+                    list.css( 'display', 'none' );
+                });
+            });
+        }
     },
 
     _setVideo       : function () {
